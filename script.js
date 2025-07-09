@@ -39,15 +39,27 @@ function nextQuestion() {
   });
 }
 
-function checkAnswer(sel) {
-  const r = document.getElementById('result');
-  if (sel === currentCorrect) {
-    r.textContent = '✅ Bravo !';
-    r.style.color = 'green';
+function checkAnswer(selected) {
+  const result = document.getElementById('result');
+
+  // Efface les effets précédents
+  for (let i = 0; i < 3; i++) {
+    const img = document.getElementById('img' + i);
+    img.classList.remove("correct", "incorrect");
+  }
+
+  const clickedImg = document.getElementById('img' + selected);
+
+  if (selected === currentCorrect) {
+    result.textContent = '🎉 Bravo Jules !';
+    result.style.color = '#2ecc71';
+    clickedImg.classList.add("correct");
   } else {
-    r.textContent = '❌ Essaie encore...';
-    r.style.color = 'red';
+    result.textContent = '❌ Non, essaie encore !';
+    result.style.color = '#e74c3c';
+    clickedImg.classList.add("incorrect");
   }
 }
+
 
 init();
