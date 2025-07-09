@@ -54,25 +54,38 @@ function nextQuestion() {
 
 function checkAnswer(selected) {
   const result = document.getElementById('result');
+  const clickedImg = document.getElementById('img' + selected);
 
-  // Efface les effets précédents
+  // Retire les anciennes classes
   for (let i = 0; i < 3; i++) {
     const img = document.getElementById('img' + i);
     img.classList.remove("correct", "incorrect");
   }
 
-  const clickedImg = document.getElementById('img' + selected);
-
+  // Réaction selon la réponse
   if (selected === currentCorrect) {
     result.textContent = '🎉 Bravo Jules !';
     result.style.color = '#2ecc71';
     clickedImg.classList.add("correct");
+    sonBonne.currentTime = 0;
+    sonBonne.play();
+    document.body.classList.add("flash-green");
+    setTimeout(() => {
+      document.body.classList.remove("flash-green");
+    }, 600);
   } else {
     result.textContent = '❌ Non, essaie encore !';
     result.style.color = '#e74c3c';
     clickedImg.classList.add("incorrect");
+    sonMauvaise.currentTime = 0;
+    sonMauvaise.play();
+    document.body.classList.add("flash-red");
+    setTimeout(() => {
+      document.body.classList.remove("flash-red");
+    }, 600);
   }
 }
+
 
 
 init();
