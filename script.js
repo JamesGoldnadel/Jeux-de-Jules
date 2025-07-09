@@ -1,7 +1,8 @@
 let imageBank = [], currentCorrect = 0;
+
 // Récupération des sons
-const sonBonne = document.getElementById('son-bonne');
-const sonMauvaise = document.getElementById('son-mauvaise');
+const sonBonne = new Audio('sons/good-chime.mp3');
+const sonMauvaise = new Audio('sons/error-buzzer.mp3');
 
 async function init() {
   try {
@@ -61,14 +62,20 @@ function checkAnswer(selected) {
     result.textContent = '🎉 Bravo Jules !';
     result.style.color = '#2ecc71';
     clickedImg.classList.add("correct");
-    if (sonBonne) { sonBonne.currentTime = 0; sonBonne.play(); }
+
+    sonBonne.currentTime = 0;
+    sonBonne.play();
+
     document.body.classList.add("flash-green");
     setTimeout(() => document.body.classList.remove("flash-green"), 600);
   } else {
     result.textContent = '❌ Non, essaie encore !';
     result.style.color = '#e74c3c';
     clickedImg.classList.add("incorrect");
-    if (sonMauvaise) { sonMauvaise.currentTime = 0; sonMauvaise.play(); }
+
+    sonMauvaise.currentTime = 0;
+    sonMauvaise.play();
+
     document.body.classList.add("flash-red");
     setTimeout(() => document.body.classList.remove("flash-red"), 600);
   }
