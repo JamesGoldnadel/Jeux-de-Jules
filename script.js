@@ -64,22 +64,31 @@ function checkAnswer(selected) {
     result.style.color = '#2ecc71';
     clickedImg.classList.add("correct");
 
-    sonBonne.currentTime = 0;
-    sonBonne.play();
+    if (sonBonne) {
+      sonBonne.currentTime = 0;
+      sonBonne.play();
+    }
 
     document.body.classList.add("flash-green");
     setTimeout(() => document.body.classList.remove("flash-green"), 600);
+
+    // ➕ Ajout : passer automatiquement à la question suivante
+    setTimeout(() => nextQuestion(), 1500);
+
   } else {
     result.textContent = '❌ Non, essaie encore !';
     result.style.color = '#e74c3c';
     clickedImg.classList.add("incorrect");
 
-    sonMauvaise.currentTime = 0;
-    sonMauvaise.play();
+    if (sonMauvaise) {
+      sonMauvaise.currentTime = 0;
+      sonMauvaise.play();
+    }
 
     document.body.classList.add("flash-red");
     setTimeout(() => document.body.classList.remove("flash-red"), 600);
   }
 }
+
 
 init();
