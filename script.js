@@ -5,10 +5,6 @@ const sonBonne = document.getElementById('son-bonne');
 const sonMauvaise = document.getElementById('son-mauvaise');
 
 
-// Récupération des sons
-const sonBonne = new Audio('sons/good-chime.mp3');
-const sonMauvaise = new Audio('sons/error-buzzer.mp3');
-
 async function init() {
   try {
     const resp = await fetch('images.json');
