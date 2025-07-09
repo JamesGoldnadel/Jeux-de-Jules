@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu - Jules</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Jeu éducatif de Jules 🧩</h1>
+  <h2 id="word">Chargement...</h2>
+  <div class="images">
+    <img id="img0" onclick="checkAnswer(0)">
+    <img id="img1" onclick="checkAnswer(1)">
+    <img id="img2" onclick="checkAnswer(2)">
+  </div>
+  <p id="result"></p>
+  <button onclick="nextQuestion()">Question suivante ▶️</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
