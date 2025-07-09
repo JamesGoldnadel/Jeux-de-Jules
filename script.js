@@ -1,4 +1,3 @@
-// Fichier : script.js
 let imageBank = [], currentCorrect = 0;
 
 async function init() {
@@ -7,14 +6,14 @@ async function init() {
     const imageList = await resp.json();
 
     imageBank = imageList.map(name => ({
-      word: name.split('.').slice(0, -1).join('.').toUpperCase(),
+      word: name.split('.')[0].toUpperCase(),
       url: `images/${name}`
     }));
 
     console.log("Images détectées :", imageBank);
     nextQuestion();
   } catch (err) {
-    console.error("Impossible de charger images.json :", err);
+    console.error("Erreur de chargement de images.json :", err);
     document.getElementById('word').textContent = "Erreur de chargement du fichier images.json";
   }
 }
@@ -25,15 +24,18 @@ function nextQuestion() {
     document.getElementById('word').textContent = "Ajoute au moins 3 images dans /images + images.json !";
     return;
   }
+
   const idxs = [];
   while (idxs.length < 3) {
     let idx = Math.floor(Math.random() * imageBank.length);
     if (!idxs.includes(idx)) idxs.push(idx);
   }
+
   currentCorrect = Math.floor(Math.random() * 3);
   document.getElementById('word').textContent = imageBank[idxs[currentCorrect]].word;
+
   idxs.forEach((i, j) => {
-    document.getElementById('img'+j).src = imageBank[i].url;
+    document.getElementById('img' + j).src = imageBank[i].url;
   });
 }
 
