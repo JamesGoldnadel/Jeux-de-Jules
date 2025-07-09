@@ -19,25 +19,38 @@ async function init() {
 }
 
 function nextQuestion() {
-  document.getElementById('result').textContent = '';
+  const result = document.getElementById('result');
+  result.textContent = '';
+
+  // 🔄 Supprime les effets visuels des réponses précédentes
+  for (let i = 0; i < 3; i++) {
+    const img = document.getElementById('img' + i);
+    img.classList.remove("correct", "incorrect");
+  }
+
   if (imageBank.length < 3) {
-    document.getElementById('word').textContent = "Ajoute au moins 3 images dans /images + images.json !";
+    document.getElementById('word').textContent = "Ajoute au moins 3 images dans /images !";
     return;
   }
 
-  const idxs = [];
-  while (idxs.length < 3) {
+  // 🔢 Sélectionne 3 images au hasard
+  let indexes = [];
+  while (indexes.length < 3) {
     let idx = Math.floor(Math.random() * imageBank.length);
-    if (!idxs.includes(idx)) idxs.push(idx);
+    if (!indexes.includes(idx)) indexes.push(idx);
   }
 
+  // 🎯 Choisit laquelle est la bonne réponse
   currentCorrect = Math.floor(Math.random() * 3);
-  document.getElementById('word').textContent = imageBank[idxs[currentCorrect]].word;
+  document.getElementById('word').textContent = imageBank[indexes[currentCorrect]].word.toUpperCase();
 
-  idxs.forEach((i, j) => {
-    document.getElementById('img' + j).src = imageBank[i].url;
+  // 🖼️ Affiche les images correspondantes
+  indexes.forEach((idx, i) => {
+    const img = document.getElementById('img' + i);
+    img.src = imageBank[idx].url;
   });
 }
+
 
 function checkAnswer(selected) {
   const result = document.getElementById('result');
