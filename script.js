@@ -1,4 +1,7 @@
 let imageBank = [], currentCorrect = 0;
+// Récupération des sons
+const sonBonne = document.getElementById('son-bonne');
+const sonMauvaise = document.getElementById('son-mauvaise');
 
 async function init() {
   try {
@@ -10,11 +13,10 @@ async function init() {
       url: `images/${name}`
     }));
 
-    console.log("Images détectées :", imageBank);
     nextQuestion();
   } catch (err) {
-    console.error("Erreur de chargement de images.json :", err);
-    document.getElementById('word').textContent = "Erreur de chargement du fichier images.json";
+    console.error("Erreur loading images.json:", err);
+    document.getElementById('word').textContent = "Erreur de chargement";
   }
 }
 
@@ -22,70 +24,54 @@ function nextQuestion() {
   const result = document.getElementById('result');
   result.textContent = '';
 
-  // 🔄 Supprime les effets visuels des réponses précédentes
+  // Supprime les effets visuels de la précédente réponse
   for (let i = 0; i < 3; i++) {
-    const img = document.getElementById('img' + i);
-    img.classList.remove("correct", "incorrect");
+    document.getElementById('img' + i).classList.remove("correct", "incorrect");
   }
 
   if (imageBank.length < 3) {
-    document.getElementById('word').textContent = "Ajoute au moins 3 images dans /images !";
+    document.getElementById('word').textContent = "Ajoute au moins 3 images dans /images + images.json !";
     return;
   }
 
-  // 🔢 Sélectionne 3 images au hasard
-  let indexes = [];
+  const indexes = [];
   while (indexes.length < 3) {
     let idx = Math.floor(Math.random() * imageBank.length);
     if (!indexes.includes(idx)) indexes.push(idx);
   }
 
-  // 🎯 Choisit laquelle est la bonne réponse
   currentCorrect = Math.floor(Math.random() * 3);
-  document.getElementById('word').textContent = imageBank[indexes[currentCorrect]].word.toUpperCase();
+  document.getElementById('word').textContent = imageBank[indexes[currentCorrect]].word;
 
-  // 🖼️ Affiche les images correspondantes
-  indexes.forEach((idx, i) => {
-    const img = document.getElementById('img' + i);
-    img.src = imageBank[idx].url;
+  indexes.forEach((i, j) => {
+    document.getElementById('img' + j).src = imageBank[i].url;
   });
 }
-
 
 function checkAnswer(selected) {
   const result = document.getElementById('result');
   const clickedImg = document.getElementById('img' + selected);
 
-  // Retire les anciennes classes
+  // Réinitialise les effets des autres images
   for (let i = 0; i < 3; i++) {
-    const img = document.getElementById('img' + i);
-    img.classList.remove("correct", "incorrect");
+    document.getElementById('img' + i).classList.remove("correct", "incorrect");
   }
 
-  // Réaction selon la réponse
   if (selected === currentCorrect) {
     result.textContent = '🎉 Bravo Jules !';
     result.style.color = '#2ecc71';
     clickedImg.classList.add("correct");
-    sonBonne.currentTime = 0;
-    sonBonne.play();
+    if (sonBonne) { sonBonne.currentTime = 0; sonBonne.play(); }
     document.body.classList.add("flash-green");
-    setTimeout(() => {
-      document.body.classList.remove("flash-green");
-    }, 600);
+    setTimeout(() => document.body.classList.remove("flash-green"), 600);
   } else {
     result.textContent = '❌ Non, essaie encore !';
     result.style.color = '#e74c3c';
     clickedImg.classList.add("incorrect");
-    sonMauvaise.currentTime = 0;
-    sonMauvaise.play();
+    if (sonMauvaise) { sonMauvaise.currentTime = 0; sonMauvaise.play(); }
     document.body.classList.add("flash-red");
-    setTimeout(() => {
-      document.body.classList.remove("flash-red");
-    }, 600);
+    setTimeout(() => document.body.classList.remove("flash-red"), 600);
   }
 }
-
-
 
 init();
