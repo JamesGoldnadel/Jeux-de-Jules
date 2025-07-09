@@ -54,3 +54,22 @@ img.incorrect {
   80% { transform: translateX(10px); }
   100% { transform: translateX(0); }
 }
+body.flash-green {
+  animation: flash-green 0.6s ease;
+}
+
+body.flash-red {
+  animation: flash-red 0.6s ease;
+}
+
+@keyframes flash-green {
+  0%   { background-color: #ffffff; }
+  50%  { background-color: #c8facc; }
+  100% { background-color: #ffffff; }
+}
+
+@keyframes flash-red {
+  0%   { background-color: #ffffff; }
+  50%  { background-color: #ffd6d6; }
+  100% { background-color: #ffffff; }
+}
