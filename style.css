@@ -1,8 +1,10 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f8ff;  /* identique à clickphoto */
   text-align: center;
-  padding: 20px;
+  padding: 30px;
 }
+
 
 .images {
   display: flex;
@@ -79,3 +81,10 @@ body.flash-red {
   50%  { background-color: #ffd6d6; }
   100% { background-color: #ffffff; }
 }
+.logo {
+  width: 200px;
+  display: block;
+  margin: 20px auto 30px;
+}
+
+
