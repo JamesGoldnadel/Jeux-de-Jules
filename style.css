@@ -1,9 +1,11 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f0f8ff;  /* identique à clickphoto */
+  background-color: #ffffff; /* fond blanc */
   text-align: center;
   padding: 30px;
+  margin: 0;
 }
+
 
 
 .images {
