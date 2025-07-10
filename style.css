@@ -84,9 +84,11 @@ body.flash-red {
   100% { background-color: #ffffff; }
 }
 .logo {
-  width: 200px;
+  width: 220px;            /* même taille partout */
+  max-width: 90vw;         /* pour les petits écrans */
   display: block;
-  margin: 20px auto 30px;
+  margin: 0 auto 30px;
 }
+
 
 
