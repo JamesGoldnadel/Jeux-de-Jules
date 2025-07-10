@@ -1,6 +1,6 @@
 let imageBank = [];
+let currentPairs = []; // tableau de paires mot + url
 let selectedWord = null;
-let selectedImage = null;
 const sonBonne = document.getElementById('son-bonne');
 const sonMauvaise = document.getElementById('son-mauvaise');
 
@@ -14,91 +14,82 @@ async function init() {
       url: `images/${name}`
     }));
 
-    startReliphoto();
+    startNewRound();
   } catch (err) {
     console.error("Erreur loading images.json:", err);
-    document.getElementById('result').textContent = "Erreur de chargement";
+    document.getElementById('error').textContent = "Erreur de chargement";
   }
 }
 
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+function startNewRound() {
+  // Mélange du tableau global
+  const shuffled = [...imageBank].sort(() => 0.5 - Math.random());
+  currentPairs = shuffled.slice(0, 3); // on garde 3 paires
 
-function startReliphoto() {
-  const wordCol = document.getElementById("wordColumn");
-  const imageCol = document.getElementById("imageColumn");
-  wordCol.innerHTML = "";
-  imageCol.innerHTML = "";
+  // Mélange les images indépendamment des mots
+  const shuffledImages = [...currentPairs].sort(() => 0.5 - Math.random());
 
-  const indexes = [];
-  while (indexes.length < 3 && imageBank.length >= 3) {
-    let idx = Math.floor(Math.random() * imageBank.length);
-    if (!indexes.includes(idx)) indexes.push(idx);
-  }
-
-  const selectedImages = indexes.map(i => imageBank[i]);
-  const shuffledImages = shuffle([...selectedImages]);
-
-  selectedImages.forEach(obj => {
-    const div = document.createElement("div");
-    div.textContent = obj.word;
-    div.className = "word-item";
-    div.onclick = () => selectWord(div, obj.word);
-    wordCol.appendChild(div);
+  // Injecte les mots dans les boutons
+  const wordContainer = document.getElementById('words');
+  wordContainer.innerHTML = '';
+  currentPairs.forEach((pair, index) => {
+    const btn = document.createElement('button');
+    btn.textContent = pair.word;
+    btn.className = 'word-button';
+    btn.onclick = () => selectWord(pair.word, btn);
+    wordContainer.appendChild(btn);
   });
 
-  shuffledImages.forEach(obj => {
-    const div = document.createElement("div");
-    div.className = "image-item";
-    const img = document.createElement("img");
-    img.src = obj.url;
-    div.appendChild(img);
-    div.onclick = () => selectImage(div, obj.word);
-    imageCol.appendChild(div);
+  // Injecte les images
+  const imageContainer = document.getElementById('images');
+  imageContainer.innerHTML = '';
+  shuffledImages.forEach((pair) => {
+    const img = document.createElement('img');
+    img.src = pair.url;
+    img.className = 'image-item';
+    img.onclick = () => checkAnswer(pair.word, img);
+    imageContainer.appendChild(img);
   });
+
+  // Réinitialise sélection
+  selectedWord = null;
 }
 
-function selectWord(element, word) {
-  document.querySelectorAll(".word-item").forEach(el => el.classList.remove("selected"));
-  element.classList.add("selected");
-  selectedWord = { element, word };
-  checkMatch();
+function selectWord(word, button) {
+  selectedWord = word;
+
+  // Met en surbrillance le mot sélectionné
+  const allButtons = document.querySelectorAll('.word-button');
+  allButtons.forEach(btn => btn.classList.remove('selected'));
+  button.classList.add('selected');
 }
 
-function selectImage(element, word) {
-  document.querySelectorAll(".image-item").forEach(el => el.classList.remove("selected"));
-  element.classList.add("selected");
-  selectedImage = { element, word };
-  checkMatch();
-}
+function checkAnswer(clickedWord, imageElement) {
+  if (!selectedWord) return;
 
-function checkMatch() {
-  if (selectedWord && selectedImage) {
-    const result = document.getElementById("result");
-    if (selectedWord.word === selectedImage.word) {
-      result.textContent = "🎉 Bravo Jules !";
-      result.style.color = "#2ecc71";
-      sonBonne.currentTime = 0;
-      sonBonne.play();
-      selectedWord.element.classList.add("correct");
-      selectedImage.element.classList.add("correct");
-    } else {
-      result.textContent = "❌ Non, essaie encore !";
-      result.style.color = "#e74c3c";
-      sonMauvaise.currentTime = 0;
-      sonMauvaise.play();
-      selectedWord.element.classList.add("incorrect");
-      selectedImage.element.classList.add("incorrect");
-    }
+  const result = document.getElementById('result');
+  const allButtons = document.querySelectorAll('.word-button');
 
-    setTimeout(() => {
-      document.querySelectorAll(".selected, .correct, .incorrect").forEach(el => el.classList.remove("selected", "correct", "incorrect"));
-      selectedWord = null;
-      selectedImage = null;
-      result.textContent = "";
-    }, 1200);
+  if (selectedWord === clickedWord) {
+    result.textContent = "🎉 Bravo Jules !";
+    result.style.color = '#2ecc71';
+    imageElement.classList.add("correct");
+    if (sonBonne) { sonBonne.currentTime = 0; sonBonne.play(); }
+    document.body.classList.add("flash-green");
+    setTimeout(() => document.body.classList.remove("flash-green"), 600);
+    setTimeout(() => startNewRound(), 1500);
+  } else {
+    result.textContent = "❌ Non, essaie encore !";
+    result.style.color = '#e74c3c';
+    imageElement.classList.add("incorrect");
+    if (sonMauvaise) { sonMauvaise.currentTime = 0; sonMauvaise.play(); }
+    document.body.classList.add("flash-red");
+    setTimeout(() => document.body.classList.remove("flash-red"), 600);
   }
+
+  // Réinitialise
+  selectedWord = null;
+  allButtons.forEach(btn => btn.classList.remove('selected'));
 }
 
 init();
