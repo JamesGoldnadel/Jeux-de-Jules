@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <link rel="icon" type="image/png" href="images/favicon.png">
   <meta charset="UTF-8">
   <title>Reliphoto</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
-  <!-- Logo cliquable -->
+  <!-- Logo -->
   <a href="index.html">
     <img src="images/logo-jeu-de-jules.jpg" alt="Logo du jeu de Jules" class="logo">
   </a>
 
-  <!-- Titre du jeu -->
-  <h1>Reliphoto</h1>
-
-  <!-- Zone de jeu à remplir -->
-  <div id="game-container">
-    <!-- à venir : questions, images, instructions -->
-    <p>En construction…</p>
+  <!-- Grille de jeu -->
+  <div class="reliphoto-container">
+    <div class="word-column" id="wordColumn"></div>
+    <div class="image-column" id="imageColumn"></div>
   </div>
 
-  <!-- Script dédié (à créer plus tard) -->
+  <div id="result"></div>
+
+  <!-- Sons -->
+  <audio id="son-bonne" src="sons/good-chime.mp3"></audio>
+  <audio id="son-mauvaise" src="sons/error-buzzer.mp3"></audio>
+
   <script src="reliphoto.js"></script>
 </body>
 </html>
-
