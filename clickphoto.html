@@ -2,45 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Jeux de Jules</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f0f8ff;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      font-size: 48px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-    .game-button {
-      display: inline-block;
-      margin: 20px;
-      padding: 20px 40px;
-      font-size: 24px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      text-decoration: none;
-    }
-    .game-button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <title>Clickphoto</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>🎮 Bienvenue sur les Jeux de Jules !</h1>
-  <p>Choisis un jeu pour commencer :</p>
+  <!-- Logo en haut cliquable vers l'accueil -->
+  <a href="index.html">
+    <img src="images/logo-jeu-de-jules.jpg" alt="Logo du jeu de Jules" class="logo">
+  </a>
 
-  <a class="game-button" href="jeu-images-mots.html">🖼️ Devine l'image</a>
-  <a class="game-button" href="#">🔤 Jeu à venir</a>
-  <a class="game-button" href="#">🔢 Autre jeu</a>
+  <!-- Mot à deviner -->
+  <h1 id="word">Mot</h1>
+
+  <!-- Images proposées -->
+  <div class="images">
+    <img id="img0" onclick="checkAnswer(0)">
+    <img id="img1" onclick="checkAnswer(1)">
+    <img id="img2" onclick="checkAnswer(2)">
+  </div>
+
+  <!-- Résultat -->
+  <div id="result"></div>
+
+  <!-- Sons -->
+  <audio id="son-bonne" src="sons/good-chime.mp3"></audio>
+  <audio id="son-mauvaise" src="sons/error-buzzer.mp3"></audio>
+
+  <!-- Script -->
+  <script src="script.js"></script>
 
 </body>
 </html>
