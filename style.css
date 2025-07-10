@@ -6,6 +6,13 @@ body {
   margin: 0;
 }
 
+.logo-home {
+  width: 220px;           /* même taille que les autres pages */
+  max-width: 90vw;
+  display: block;
+  margin: 0 auto 30px;
+}
+
 
 
 .images {
